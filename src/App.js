@@ -3,7 +3,8 @@ import Home from "./components/Home";
 import InstructorProfile from "./components/InstructorProfile";
 import NotFound from "./components/NotFound";
 import { useState } from "react";
-
+import { Switch, Route } from "react-router";
+import { Redirect } from "react-router-dom";
 const App = ({ instructors }) => {
   const [currentPage, setCurrentPage] = useState("/");
 
@@ -48,7 +49,25 @@ const App = ({ instructors }) => {
     }
   };
 
-  return <AppWrapper>{homemadeRouter()}</AppWrapper>;
+  return (
+    <AppWrapper>
+      {" "}
+      <Switch>
+        <Route exact path="/instructors/:instructorSlug">
+          <InstructorProfile instructors={instructors} />
+        </Route>
+        <Route exact path="/404">
+          <NotFound />
+        </Route>
+        <Route exact path="/">
+          <Home instructors={instructors} />
+        </Route>
+        <Route path="*">
+          <Redirect to="/404" />
+        </Route>
+      </Switch>
+    </AppWrapper>
+  );
 };
 
 export default App;
